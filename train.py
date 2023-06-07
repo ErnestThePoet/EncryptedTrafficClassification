@@ -5,13 +5,13 @@ from torch import nn
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
 from scapy.all import *
-from utils import get_tcp_udp_headers
+from utils import get_tcp_udp_slices
 from model import TCANN
 
 
 class PcapDataset(Dataset):
     def __init__(self, file_paths, classes):
-        headers = [get_tcp_udp_headers(rdpcap(x)) for x in file_paths]
+        headers = [get_tcp_udp_slices(rdpcap(x)) for x in file_paths]
         self.packets = torch.from_numpy(np.concatenate(headers)).type(torch.float)
         expanded_classes = [np.empty(len(x)) for x in headers]
         for i, ie in enumerate(classes):

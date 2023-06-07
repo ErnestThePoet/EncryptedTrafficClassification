@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from scapy.all import *
-from utils import get_tcp_udp_headers
+from utils import get_tcp_udp_slices
 from matplotlib import pyplot as plt
 
 plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]
@@ -21,9 +21,9 @@ dataset_qq = rdpcap("./dataset/qq_train.pcap")
 dataset_wx = rdpcap("./dataset/wx_train.pcap")
 dataset_https = rdpcap("./dataset/https_train.pcap")
 
-headers_qq = get_tcp_udp_headers(dataset_qq)
-headers_wx = get_tcp_udp_headers(dataset_wx)
-headers_https = get_tcp_udp_headers(dataset_https)
+headers_qq = get_tcp_udp_slices(dataset_qq)
+headers_wx = get_tcp_udp_slices(dataset_wx)
+headers_https = get_tcp_udp_slices(dataset_https)
 
 s = StandardScaler()
 std_qq = s.fit_transform(headers_qq)
