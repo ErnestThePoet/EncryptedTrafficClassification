@@ -36,15 +36,22 @@ def get_header_payload(pkt: Packet) -> np.ndarray:
         raise RuntimeError("packet is neither TCP nor UDP")
 
 
+def get_tcp_udp_header(pkt: Packet) -> np.ndarray:
+    if TCP in pkt or UDP in pkt:
+        return get_header_payload(pkt)
+    else:
+        raise RuntimeError("packet is neither TCP nor UDP")
+
+
 def get_tcp_udp_headers(packets: PacketList) -> np.ndarray:
     tcp_udp_packets: list[Packet] = list(filter(lambda x: TCP in x or UDP in x, packets))
 
     if len(tcp_udp_packets) == 0:
         return np.array([])
 
-    result: np.ndarray = np.array([get_header_payload(tcp_udp_packets[0])])
+    result: np.ndarray = np.array([get_tcp_udp_header(tcp_udp_packets[0])])
 
     for pkt in tcp_udp_packets[1:]:
-        result = np.concatenate([result, np.array([get_header_payload(pkt)])])
+        result = np.concatenate([result, np.array([get_tcp_udp_header(pkt)])])
 
     return result
