@@ -23,7 +23,7 @@ def get_54_header(pkt: Packet) -> np.ndarray:
 
 
 def get_header_payload(pkt: Packet) -> np.ndarray:
-    SLICE_LENGTH = 150
+    SLICE_LENGTH = 100
 
     if TCP in pkt or UDP in pkt:
         if len(raw(pkt)) >= SLICE_LENGTH:
