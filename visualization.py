@@ -16,9 +16,9 @@ def pca(data_std: np.ndarray, n_components) -> np.ndarray:
     return data_std @ pca.components_.T
 
 
-dataset_qq = rdpcap("./dataset/qq_10k.pcap")
-dataset_wx = rdpcap("./dataset/wx_7k5.pcap")
-dataset_https = rdpcap("./dataset/https_20k.pcap")
+dataset_qq = rdpcap("./dataset/qq_train.pcap")
+dataset_wx = rdpcap("./dataset/wx_train.pcap")
+dataset_https = rdpcap("./dataset/https_train.pcap")
 
 headers_qq = get_tcp_udp_headers(dataset_qq)
 headers_wx = get_tcp_udp_headers(dataset_wx)
