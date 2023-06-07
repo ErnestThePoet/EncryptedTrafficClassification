@@ -4,7 +4,8 @@ import torch.optim
 from torch import nn
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
-from utils import *
+from scapy.all import *
+from utils import get_tcp_udp_headers
 from model import TCANN
 
 
