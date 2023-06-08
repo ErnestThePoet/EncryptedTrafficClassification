@@ -1,6 +1,5 @@
 import threading
 import time
-
 import requests
 from scapy.all import *
 from scapy.layers.inet import *
@@ -43,7 +42,8 @@ def send_accumulated_packets():
 
     while True:
         if len(accumulated_packets) > 0:
-            requests.post(API_PREFIX + "api/receive_data", json={"packets": accumulated_packets})
+            requests.post(API_PREFIX + "api/receive_data",
+                          json={"packets": accumulated_packets})
             print(f"*** Sent {len(accumulated_packets)} ***")
             accumulated_packets = []
 
