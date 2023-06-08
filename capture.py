@@ -1,3 +1,4 @@
+import requests
 from scapy.all import *
 from scapy.layers.inet import *
 from utils import get_tcp_udp_slice
@@ -9,16 +10,27 @@ tcann = TCANN()
 tcann.load_state_dict(torch.load("./model/tcann.pth"))
 tcann.eval()
 
+app_names = ["QQ", "WX", "HTTPS"]
 app_counts = [0, 0, 0]
+
+API_HOST = "127.0.0.1"
+API_PORT = 13680
+API_PREFIX = f"http://{API_HOST}:{API_PORT}/"
 
 
 def packet_handler(pkt: Packet):
     if TCP in pkt or UDP in pkt:
         packet_slice = get_tcp_udp_slice(pkt)
-        pred = tcann(torch.tensor(np.array([packet_slice]), dtype=torch.float)).argmax(1)
-        app_counts[pred.item()] += 1
-        print(f"QQ: {app_counts[0]} WX: {app_counts[1]} HTTPS: {app_counts[2]}")
+        pred = tcann(torch.tensor(np.array([packet_slice]), dtype=torch.float)).argmax(1).item()
+        app_counts[pred] += 1
+        print(", ".join([f"{app_names[x]}: {app_counts[x]}" for x in range(len(app_counts))]))
+        requests.post(API_PREFIX + "api/receive_data", json={
+            "protocal": "TCP" if TCP in pkt else "UDP",
+            "port": pkt[TCP].dport if TCP in pkt else pkt[UDP].dport,
+            "catalogue": app_names[pred]
+        })
 
 
-# Withous filter is also ok
-sniff(iface="WLAN", prn=packet_handler, filter="tcp or udp")
+sniff(iface="WLAN",
+      prn=packet_handler,
+      filter=f"(tcp or udp) and (not port 53) and (not port 1900) and (not port {API_PORT})")
