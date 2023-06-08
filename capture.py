@@ -13,8 +13,8 @@ tcann.eval()
 app_names = ["QQ", "WX", "HTTPS"]
 app_counts = [0, 0, 0]
 
-API_HOST = "127.0.0.1"
-API_PORT = 13680
+API_HOST = "172.20.39.15"
+API_PORT = 12345
 API_PREFIX = f"http://{API_HOST}:{API_PORT}/"
 
 
@@ -24,8 +24,8 @@ def packet_handler(pkt: Packet):
         pred = tcann(torch.tensor(np.array([packet_slice]), dtype=torch.float)).argmax(1).item()
         app_counts[pred] += 1
         print(", ".join([f"{app_names[x]}: {app_counts[x]}" for x in range(len(app_counts))]))
-        requests.post(API_PREFIX + "api/receive_data", json={
-            "protocal": "TCP" if TCP in pkt else "UDP",
+        requests.post(API_PREFIX + "api/receive_data", data={
+            "protocol": "TCP" if TCP in pkt else "UDP",
             "port": pkt[TCP].dport if TCP in pkt else pkt[UDP].dport,
             "catalogue": app_names[pred]
         })
