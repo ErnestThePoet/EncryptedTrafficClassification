@@ -6,9 +6,9 @@ from scapy.layers.inet import *
 from utils import get_tcp_udp_slice
 import torch
 import numpy as np
-from model import TCANN
+from model import TCDNN
 
-tcann = TCANN()
+tcann = TCDNN()
 tcann.load_state_dict(torch.load("./model/tcann.pth"))
 tcann.eval()
 
@@ -42,8 +42,8 @@ def send_accumulated_packets():
 
     while True:
         if len(accumulated_packets) > 0:
-            requests.post(API_PREFIX + "api/receive_data",
-                          json={"packets": accumulated_packets})
+            # requests.post(API_PREFIX + "api/receive_data",
+            #               json={"packets": accumulated_packets})
             print(f"*** Sent {len(accumulated_packets)} ***")
             accumulated_packets = []
 

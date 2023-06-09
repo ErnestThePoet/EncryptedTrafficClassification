@@ -6,7 +6,7 @@ from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
 from scapy.all import *
 from utils import get_tcp_udp_slices
-from model import TCANN
+from model import TCDNN
 
 
 class PcapDataset(Dataset):
@@ -62,7 +62,7 @@ dataloader_test = DataLoader(dataset_test, batch_size)
 
 device = "cuda"
 
-model = TCANN().to(device)
+model = TCDNN().to(device)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-03)
 

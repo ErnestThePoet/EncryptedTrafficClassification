@@ -1,10 +1,10 @@
 from torch import nn
 
 
-# Traffic Classification Artificial Neural Network
-class TCANN(nn.Module):
+# Traffic Classification Deep Neural Network
+class TCDNN(nn.Module):
     def __init__(self):
-        super(TCANN, self).__init__()
+        super(TCDNN, self).__init__()
         self.mlp = nn.Sequential(
             nn.Linear(100, 90),
             nn.ReLU(),
