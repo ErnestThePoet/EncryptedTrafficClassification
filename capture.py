@@ -9,7 +9,7 @@ import numpy as np
 from model import TCDNN
 
 tcann = TCDNN()
-tcann.load_state_dict(torch.load("./model/tcann.pth"))
+tcann.load_state_dict(torch.load("./model/tcdnn.pth"))
 tcann.eval()
 
 app_names = ["QQ", "WX", "HTTPS"]

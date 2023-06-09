@@ -123,7 +123,7 @@ for i in range(epoch_count):
     train(dataloader_train, model, loss_fn, optimizer)
     test(dataloader_test, model, loss_fn)
 
-torch.save(model.state_dict(), "./model/tcann.pth")
+torch.save(model.state_dict(), "./model/tcdnn.pth")
 
 plt.plot(np.arange(0, epoch_count), accuracies, c="royalblue")
 plt.title("Accuracy")
