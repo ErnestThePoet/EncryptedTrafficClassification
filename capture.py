@@ -15,7 +15,7 @@ tcann.eval()
 app_names = ["QQ", "WX", "HTTPS"]
 app_counts = [0, 0, 0]
 
-API_HOST = "172.20.158.119"
+API_HOST = "172.20.29.80"
 API_PORT = 12345
 API_PREFIX = f"http://{API_HOST}:{API_PORT}/"
 
@@ -42,8 +42,8 @@ def send_accumulated_packets():
 
     while True:
         if len(accumulated_packets) > 0:
-            # requests.post(API_PREFIX + "api/receive_data",
-            #               json={"packets": accumulated_packets})
+            requests.post(API_PREFIX + "api/receive_data",
+                          json={"packets": accumulated_packets})
             print(f"*** Sent {len(accumulated_packets)} ***")
             accumulated_packets = []
 
@@ -52,6 +52,7 @@ def send_accumulated_packets():
 
 threading.Thread(target=send_accumulated_packets).start()
 
+# Remove iface="WLAN" when using ethernet
 sniff(iface="WLAN",
       prn=packet_handler,
       filter=f"(tcp or udp) and (not port 53) and (not port 1900) and (not port {API_PORT})")
